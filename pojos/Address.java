@@ -9,6 +9,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "address")
 public class Address 
@@ -18,9 +20,13 @@ public class Address
 	private String state;
 	private String country;
 	private String phoneno;
+	@JsonIgnore
 	private User uId;
+	@JsonIgnore
 	private Victim vId;
+	@JsonIgnore
 	private Ngo ngoId;
+	@JsonIgnore
 	private Police pId;
 	
 	public Address() 

@@ -15,6 +15,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="users")
 public class User 
@@ -24,7 +26,13 @@ public class User
 	private UserRole role;
 	private Photo dp;
 	private Verification ver;
+	@JsonIgnore
 	private Address addId;
+	@JsonIgnore
+	private Police pId;
+	@JsonIgnore
+	private Ngo nId;
+	@JsonIgnore
 	private List<Message> msg;
 	
 	
@@ -101,11 +109,13 @@ public class User
 
 	
 	 @OneToOne(mappedBy = "uId",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-	 public Address getaddId() 
-	 { return addId; }
-	 
-	 public void setaddId(Address addId)
-	 { this.addId = addId; }
+		public Address getAddId() {
+			return addId;
+		}
+
+		public void setAddId(Address addId) {
+			this.addId = addId;
+		}
 	
 
 	@OneToOne(mappedBy = "uId",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
@@ -116,6 +126,25 @@ public class User
 	public void setDp(Photo dp) {
 		this.dp = dp;
 	}
+		
+	@OneToOne(mappedBy = "uId",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+	public Police getpId() {
+		return pId;
+	}
+
+	public void setpId(Police pId) {
+		this.pId = pId;
+	}
+
+	@OneToOne(mappedBy = "uId",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+	public Ngo getnId() {
+		return nId;
+	}
+
+	public void setnId(Ngo nId) {
+		this.nId = nId;
+	}
+
 	@OneToMany(mappedBy = "uId",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 	public List<Message> getMsg() {
 		return msg;
@@ -124,6 +153,8 @@ public class User
 	public void setMsg(List<Message> msg) {
 		this.msg = msg;
 	}
+
+	
 
 	//convenience methods
 	public void addPhoto(Photo p)

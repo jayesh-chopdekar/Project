@@ -7,8 +7,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "police")
@@ -16,8 +19,10 @@ public class Police
 {
 	private Integer deptId;
 	private String deptName;
+	@JsonIgnore
 	private Address pAddId;
-	
+	@JsonIgnore
+	private User uId;
 	
 	//constructors
 	public Police() 
@@ -59,6 +64,16 @@ public class Police
 		this.pAddId = pAddId;
 	}
 	
+	@OneToOne
+	@JoinColumn(name = "user_id")
+	public User getuId() {
+		return uId;
+	}
+
+	public void setuId(User uId) {
+		this.uId = uId;
+	}
+
 	//convenience methods
 	public void addAddress(Address a)
 	{

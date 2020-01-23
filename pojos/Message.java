@@ -10,12 +10,15 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "message")
 public class Message 
 {
 	private Integer mId;
 	private String msg;
+	@JsonIgnore
 	private User uId;
 	public Message() 
 	{

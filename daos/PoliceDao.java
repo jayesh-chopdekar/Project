@@ -25,7 +25,7 @@ public class PoliceDao implements IPoliceDao
 	public VicAdd registerCase(VicAdd v) 
 	{
 		Address add=new Address(v.getCity(), v.getState(),v.getCountry(),v.getPhno());
-		Victim vic=new Victim(v.getAge(), v.getName(), v.getBgrp(), v.getCmpNo(), v.getHeight(), v.getDob(), v.getMissingDate());
+		Victim vic=new Victim(v.getAge(), v.getName(), v.getBgrp(), v.getCmpNo(), v.getHeight(), v.getDob(), v.getMissingDate(),v.getGender());
 		sf.getCurrentSession().persist(vic);
 		sf.getCurrentSession().persist(add);
 		vic.addAddress(add);

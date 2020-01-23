@@ -16,6 +16,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "victim")
 public class Victim 
@@ -27,9 +29,10 @@ public class Victim
 	private Status status;
 	private Date dob;
 	private Date missingDate;
+	@JsonIgnore
 	private Address vAddId;
+	@JsonIgnore
 	private Photo photoId;
-	
 	
 	//constructors
 	public Victim()
@@ -37,7 +40,7 @@ public class Victim
 		System.out.println("inside victim parameterless ctor");
 	}
 
-	public Victim(Integer age, String name, String bgrp, String cmpNo, Double height, Date dob, Date missingDate) {
+	public Victim(Integer age, String name, String bgrp, String cmpNo, Double height, Date dob, Date missingDate,Gender gender) {
 		System.out.println("inside victim parameterized ctor");
 		this.age = age;
 		this.name = name;
@@ -46,6 +49,7 @@ public class Victim
 		this.height = height;
 		this.dob = dob;
 		this.missingDate = missingDate;
+		this.gender=gender;
 	}
 	
 	//getters and setters
@@ -132,12 +136,12 @@ public class Victim
 		this.missingDate = missingDate;
 	}
 	@OneToOne(mappedBy = "vId",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-	public Address getVAddId() {
+	public Address getvAddId() {
 		return vAddId;
 	}
 
-	public void setVAddId(Address addId) {
-		this.vAddId = addId;
+	public void setvAddId(Address vAddId) {
+		this.vAddId = vAddId;
 	}
 	@OneToOne(mappedBy = "vId",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 	public Photo getPhotoId() {
@@ -147,6 +151,8 @@ public class Victim
 	public void setPhotoId(Photo photoId) {
 		this.photoId = photoId;
 	}
+	
+
 	
 	//convenience methods
 	public void addAddress(Address a)
