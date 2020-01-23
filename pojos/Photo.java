@@ -36,7 +36,8 @@ public class Photo
 		return photoId;
 	}
 
-	public void setPhotoId(Integer photoId) {
+	public void setPhotoId(Integer photoId) 
+	{
 		this.photoId = photoId;
 	}
 	@Lob

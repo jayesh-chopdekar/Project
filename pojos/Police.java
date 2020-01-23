@@ -15,19 +15,23 @@ import javax.persistence.Table;
 public class Police
 {
 	private Integer deptId;
-	private String name;
+	private String deptName;
 	private Address pAddId;
 	
+	
+	//constructors
 	public Police() 
 	{
 		System.out.println("inside parameterless police ctor");
 	}
 
-	public Police(String name) 
+	public Police(String deptName) 
 	{
 		System.out.println("inside parameterized police ctor");
-		this.name = name;
+		this.deptName = deptName;
 	}
+	
+	//getters and setters
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "dept_id")
@@ -39,12 +43,12 @@ public class Police
 		this.deptId = deptId;
 	}
 
-	public String getName() {
-		return name;
+	public String getDeptName() {
+		return deptName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setDeptName(String deptName) {
+		this.deptName = deptName;
 	}
 	@OneToOne(mappedBy = "pId",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 	public Address getpAddId() {
@@ -55,4 +59,15 @@ public class Police
 		this.pAddId = pAddId;
 	}
 	
+	//convenience methods
+	public void addAddress(Address a)
+	{
+		this.pAddId=a;
+		a.setpId(this);
+	}
+	public void remAddress(Address a)
+	{
+		this.pAddId=null;
+		a.setpId(null);
+	}
 }

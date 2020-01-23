@@ -14,19 +14,23 @@ import javax.persistence.Table;
 public class Ngo 
 {
 	private Integer nId;
-	private String name;
+	private String ngoName;
 	private Address nAddId;
 	
+	
+	//constructors
 	public Ngo() 
 	{
 		System.out.println("inside parameterless ngo ctor");
 	}
 
-	public Ngo(String name)
+	public Ngo(String ngoName)
 	{
 		System.out.println("inside parameterized ngo ctor");
-		this.name = name;
+		this.ngoName = ngoName;
 	}
+	
+	//getters and setters
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Integer getnId() {
@@ -37,14 +41,14 @@ public class Ngo
 		this.nId = nId;
 	}
 
-	public String getName() {
-		return name;
+	public String getngoName() {
+		return ngoName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setngoName(String ngoName) {
+		this.ngoName = ngoName;
 	}
-	@OneToOne(mappedBy = "nId",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+	@OneToOne(mappedBy = "ngoId",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 	public Address getnAddId() {
 		return nAddId;
 	}
@@ -53,4 +57,15 @@ public class Ngo
 		this.nAddId = nAddId;
 	}
 	
+	//convenience methods
+	public void addAddress(Address a)
+	{
+		this.nAddId=a;
+		a.setNgoId(this);
+	}
+	public void remAddress(Address a)
+	{
+		this.nAddId=null;
+		a.setNgoId(null);
+	}
 }

@@ -30,6 +30,8 @@ public class Victim
 	private Address vAddId;
 	private Photo photoId;
 	
+	
+	//constructors
 	public Victim()
 	{
 		System.out.println("inside victim parameterless ctor");
@@ -45,6 +47,8 @@ public class Victim
 		this.dob = dob;
 		this.missingDate = missingDate;
 	}
+	
+	//getters and setters
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "v_id")
@@ -144,4 +148,25 @@ public class Victim
 		this.photoId = photoId;
 	}
 	
+	//convenience methods
+	public void addAddress(Address a)
+	{
+		this.vAddId=a;
+		a.setvId(this);
+	}
+	public void remAddress(Address a)
+	{
+		this.vAddId=null;
+		a.setvId(null);
+	}
+	public void addPhoto(Photo p)
+	{
+		this.photoId=p;
+		p.setvId(this);
+	}
+	public void remPhoto(Photo p)
+	{
+		this.photoId=null;
+		p.setvId(null);
+	}
 }

@@ -20,7 +20,7 @@ public class Address
 	private String phoneno;
 	private User uId;
 	private Victim vId;
-	private Ngo nId;
+	private Ngo ngoId;
 	private Police pId;
 	
 	public Address() 
@@ -78,15 +78,14 @@ public class Address
 	public void setPhoneno(String phoneno) {
 		this.phoneno = phoneno;
 	}
-	@OneToOne
-	@JoinColumn(name = "user_id")
-	public User getUId() {
-		return uId;
-	}
 
-	public void setUId(User userId) {
-		this.uId = userId;
-	}
+	
+	 @OneToOne
+	 @JoinColumn(name = "user_id") 
+	 public User getuId() { return uId; }
+	 
+	 public void setuId(User uId) { this.uId = uId; }
+	
 	@OneToOne
 	@JoinColumn(name = "victim_id")
 	public Victim getvId() {
@@ -98,13 +97,14 @@ public class Address
 	}
 	@OneToOne
 	@JoinColumn(name = "ngo_id")
-	public Ngo getNId() {
-		return nId;
+	public Ngo getNgoId() {
+		return ngoId;
 	}
 
-	public void setNId(Ngo ngoId) {
-		this.nId = ngoId;
+	public void setNgoId(Ngo ngoId) {
+		this.ngoId = ngoId;
 	}
+
 	@OneToOne
 	@JoinColumn(name = "police_id")
 	public Police getpId() {

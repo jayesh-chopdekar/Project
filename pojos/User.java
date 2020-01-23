@@ -19,19 +19,22 @@ import javax.persistence.Table;
 @Table(name="users")
 public class User 
 {
-	private Integer uId;
+	private Integer id;
 	private String name,email,password;
 	private UserRole role;
-	private Address uAddId;
 	private Photo dp;
+	private Verification ver;
+	private Address addId;
 	private List<Message> msg;
 	
+	
+	//constructors
 	public User() 
 	{
 		System.out.println("in parameterless users ctor");
 	}
 
-	public User(Integer uId, String name, String email, String password, UserRole role) 
+	public User( String name, String email, String password, UserRole role) 
 	{
 		System.out.println("in parameterized users ctor");
 		this.name = name;
@@ -40,20 +43,24 @@ public class User
 		this.role = role;
 	}
 
+	//getters and setters
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "u_id")
-	public Integer getuId() {
-		return uId;
+	public Integer getId() {
+		return id;
 	}
 
-	public void setuId(Integer uId) {
-		this.uId = uId;
+	public void setId(Integer id) {
+		this.id = id;
 	}
+
+
 	@Column(name = "name",length = 30)
 	public String getName() {
 		return name;
 	}
+
 
 	public void setName(String name) {
 		this.name = name;
@@ -82,14 +89,25 @@ public class User
 	public void setRole(UserRole role) {
 		this.role = role;
 	}
-	@OneToOne(mappedBy = "uId",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-	public Address getUAddId() {
-		return uAddId;
+	@Enumerated(EnumType.STRING)
+	@Column(name = "status")
+	public Verification getVer() {
+		return ver;
 	}
 
-	public void setUAddId(Address addId) {
-		this.uAddId = addId;
+	public void setVer(Verification ver) {
+		this.ver = ver;
 	}
+
+	
+	 @OneToOne(mappedBy = "uId",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+	 public Address getaddId() 
+	 { return addId; }
+	 
+	 public void setaddId(Address addId)
+	 { this.addId = addId; }
+	
+
 	@OneToOne(mappedBy = "uId",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 	public Photo getDp() {
 		return dp;
@@ -106,5 +124,24 @@ public class User
 	public void setMsg(List<Message> msg) {
 		this.msg = msg;
 	}
+
+	//convenience methods
+	public void addPhoto(Photo p)
+	{
+		this.dp=p;
+		p.setuId(this);
+	}
+	public void remPhoto(Photo p)
+	{
+		this.dp=null;
+		p.setuId(null);
+	}
+	
+	
+	 public void addAddress(Address a)
+	 { this.addId=a; a.setuId(this); } 
+	 
+	 public void remAddress(Address a)
+	 { this.addId=null; a.setuId(null); }
 	
 }
