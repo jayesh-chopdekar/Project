@@ -42,13 +42,14 @@ public class User
 		System.out.println("in parameterless users ctor");
 	}
 
-	public User( String name, String email, String password, UserRole role) 
+	public User( String name, String email, String password, UserRole role,Verification ver) 
 	{
 		System.out.println("in parameterized users ctor");
 		this.name = name;
 		this.email = email;
 		this.password = password;
 		this.role = role;
+		this.ver=ver;
 	}
 
 	//getters and setters
@@ -168,7 +169,31 @@ public class User
 		p.setuId(null);
 	}
 	
-	
+	public void addMsg(Message m)
+	{
+		msg.add(m);
+		m.setuId(this);
+	}
+	public void addPolice(Police p)
+	{
+		this.pId=p;
+		p.setuId(this);
+	}
+	public void remPolice(Police p)
+	{
+		this.pId=null;
+		p.setuId(null);
+	}
+	public void addNgo(Ngo n)
+	{
+		this.nId=n;
+		n.setuId(this);
+	}
+	public void remNgo(Ngo n)
+	{
+		this.nId=null;
+		n.setuId(null);
+	}
 	 public void addAddress(Address a)
 	 { this.addId=a; a.setuId(this); } 
 	 

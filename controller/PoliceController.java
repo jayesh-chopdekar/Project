@@ -9,12 +9,14 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.daos.IPoliceDao;
 import com.app.pojos.PoliceAdd;
+import com.app.pojos.UserAdd;
 import com.app.pojos.VicAdd;
 import com.app.pojos.Victim;
 
@@ -56,6 +58,14 @@ public class PoliceController
 		PoliceAdd pol=dao.addPolice(p);
 		if(pol!=null)
 			return new ResponseEntity<PoliceAdd>(p,HttpStatus.OK);
+		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+	}
+	@PutMapping("/editpol/{id}")
+	public ResponseEntity<?> editPolice(@PathVariable Integer id,@RequestBody UserAdd p)
+	{
+		UserAdd pol=dao.editPolice(id, p);
+		if(pol!=null)
+			return new ResponseEntity<UserAdd>(p,HttpStatus.OK);
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
 }

@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.app.pojos.Address;
 import com.app.pojos.User;
 import com.app.pojos.UserAdd;
+import com.app.pojos.Verification;
 
 
 @Repository
@@ -21,7 +22,7 @@ public class AdminDao implements IAdminDao
 	@Override
 	public UserAdd addUser(UserAdd u) 
 	{
-		User user= new User(u.getName(), u.getEmail(), u.getPassword(), u.getRole());
+		User user= new User(u.getName(), u.getEmail(), u.getPassword(), u.getRole(),Verification.NV);
 		Address add=new Address(u.getCity(), u.getState(), u.getCountry(), u.getPhoneno());
 		sf.getCurrentSession().persist(add);
 		sf.getCurrentSession().persist(user);
@@ -39,11 +40,9 @@ public class AdminDao implements IAdminDao
 	public void remUser(Integer id) 
 	{
 		User user = sf.getCurrentSession().get(User.class, id);
-		String jpql="select a from Address a where uId=:id";
-		Address  add= sf.getCurrentSession().createQuery(jpql, Address.class).setParameter("id", id).getSingleResult();
-		sf.getCurrentSession().delete(add);
+		sf.getCurrentSession().delete(user.getAddId());
+		user.remAddress(user.getAddId());
 		sf.getCurrentSession().delete(user);
-		user.remAddress(add);
 	}
 	@Override
 	public UserAdd editUser(Integer id,UserAdd u)
@@ -52,14 +51,33 @@ public class AdminDao implements IAdminDao
 		user.setName(u.getName());
 		user.setEmail(u.getEmail());
 		user.setPassword(u.getPassword());
-		String jpql="select a from Address a where uId=:id";
-		Address  add= sf.getCurrentSession().createQuery(jpql, Address.class).setParameter("id", id).getSingleResult();
-		add.setCity(u.getCity());
-		add.setState(u.getState());
-		add.setCountry(u.getCountry());
-		add.setPhoneno(u.getPhoneno());
-		sf.getCurrentSession().saveOrUpdate(user);
-		sf.getCurrentSession().saveOrUpdate(add);
+		user.getAddId().setCity(u.getCity());
+		user.getAddId().setState(u.getState());
+		user.getAddId().setCountry(u.getCountry());
+		user.getAddId().setPhoneno(u.getPhoneno());
 		return u;
 	}
+	@Override
+	public List<User> searchUser(String name) 
+	{
+		String jpql="select u from User u where u.name=:na";
+		List<User> u=sf.getCurrentSession().createQuery(jpql, User.class).setParameter("na", name).getResultList();
+		return u;
+	}
+	@Override
+	public void verifyUser(Integer id) 
+	{
+		User user = sf.getCurrentSession().get(User.class, id);
+		user.setVer(Verification.V);
+		
+	}
+	@Override
+	public List<User> getRequest() 
+	{
+		String jpql="select u from User u where u.ver=:ver";
+		List<User> u = sf.getCurrentSession().createQuery(jpql, User.class).setParameter("ver", Verification.NV).getResultList();
+		return u;
+	}
+	
+	
 }

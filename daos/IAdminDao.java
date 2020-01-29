@@ -11,4 +11,7 @@ public interface IAdminDao
 	public List<User> showAllUsers();
 	public void remUser(Integer id);
 	public UserAdd editUser(Integer id,UserAdd u);
+	public List<User> searchUser(String name);
+	public void verifyUser(Integer id);
+	public List<User> getRequest();
 }

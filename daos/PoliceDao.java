@@ -11,7 +11,9 @@ import com.app.pojos.Address;
 import com.app.pojos.Police;
 import com.app.pojos.PoliceAdd;
 import com.app.pojos.User;
+import com.app.pojos.UserAdd;
 import com.app.pojos.UserRole;
+import com.app.pojos.Verification;
 import com.app.pojos.VicAdd;
 import com.app.pojos.Victim;
 
@@ -35,19 +37,7 @@ public class PoliceDao implements IPoliceDao
 	public List<Victim> showAllCases() 
 	{
 		String jpql="select v from Victim v";
-		List<Victim> vicList=sf.getCurrentSession().createQuery(jpql, Victim.class).getResultList();
-		
-		
-//		List<VicAdd> vicAdd=new ArrayList<>();
-//		for (Victim victim : vicList) 
-//		{
-//			VicAdd v=new VicAdd();
-//			v.setvId(victim.getvId());
-//			v.setName(victim.getName());
-//			v.setCity(victim.getVAddId().getCity());
-//			v.setAge(victim.getAge());
-//			vicAdd.add(v);
-//		}
+		List<Victim> vicList=sf.getCurrentSession().createQuery(jpql, Victim.class).getResultList();		
 		return vicList;
 		
 	}
@@ -61,16 +51,31 @@ public class PoliceDao implements IPoliceDao
 	@Override
 	public PoliceAdd addPolice(PoliceAdd p) 
 	{
+		User use= new User(p.getName(), p.getEmail(), p.getPassword(), UserRole.POLICE,Verification.NV);
+		Address uAdd=new Address(p.getCity(), p.getState(), p.getCountry(), p.getPhoneno());
 		Police pol=new Police(p.getDeptName());
 		Address pAdd= new Address(p.getDeptCity(), p.getCountry(), p.getDeptCountry(), p.getDeptPhoneno());
-		User use= new User(p.getName(), p.getEmail(), p.getPassword(), UserRole.POLICE);
-		Address uAdd=new Address(p.getCity(), p.getState(), p.getCountry(), p.getPhoneno());
 		sf.getCurrentSession().persist(pol);
 		sf.getCurrentSession().persist(pAdd);
 		pol.addAddress(pAdd);
 		sf.getCurrentSession().persist(use);
 		sf.getCurrentSession().persist(uAdd);
-	//	use.addAddress(uAdd);
+		use.addPolice(pol);
+		use.addAddress(uAdd);
+		return p;
+	}
+	@Override
+	public UserAdd editPolice(Integer id, UserAdd p) 
+	{
+
+		User u=sf.getCurrentSession().get(User.class, id);
+		u.setName(p.getName());
+		u.setEmail(p.getEmail());
+		u.setPassword(p.getPassword());
+		u.getAddId().setCity(p.getCity());
+		u.getAddId().setState(p.getState());
+		u.getAddId().setCountry(p.getCountry());
+		u.getAddId().setPhoneno(p.getPhoneno());
 		return p;
 	}
 	

@@ -6,6 +6,7 @@ public class PoliceAdd
 	private Integer deptId;
 	private String name;
 	private String email,password;
+	private byte[] img;
 	private String deptName;
 	private String city;
 	private String state;
@@ -40,6 +41,13 @@ public class PoliceAdd
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	public byte[] getImg() {
+		return img;
+	}
+	public void setImg(byte[] img) {
+		this.img = img;
 	}
 	public String getPassword() {
 		return password;

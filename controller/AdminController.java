@@ -62,12 +62,42 @@ public class AdminController
 		 } 
 	}
 	 
-	 @PutMapping("/edituser/{id}") public ResponseEntity<?> editUser(@PathVariable
-	 Integer id,@RequestBody UserAdd u) 
-	 { UserAdd user = dao.editUser(id, u);
-	 if(user!=null) 
-		 return new ResponseEntity<UserAdd>(u,HttpStatus.OK); 
-	 return new ResponseEntity<Void>(HttpStatus.NO_CONTENT); 
+	 @PutMapping("/edituser/{id}")
+	 public ResponseEntity<?> editUser(@PathVariable Integer id,@RequestBody UserAdd u) 
+	 { 
+		 UserAdd user = dao.editUser(id, u);
+		 if(user!=null) 
+			 return new ResponseEntity<UserAdd>(u,HttpStatus.OK); 
+		 return new ResponseEntity<Void>(HttpStatus.NO_CONTENT); 
 	 }
 	
+	 @GetMapping("/searchuser/{name}")
+	 public ResponseEntity<?> searchUser(@PathVariable String name)
+	 {
+		 List<User> u=dao.searchUser(name);
+		 if(u.isEmpty())
+			 return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		 return new ResponseEntity<List<User>>(u,HttpStatus.OK);
+	 }
+	 @GetMapping("/request")
+	 public ResponseEntity<?> request()
+	 {
+		 List<User> u=dao.getRequest();
+		 if(u.isEmpty())
+			 return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		 return new ResponseEntity<List<User>>(u,HttpStatus.OK);
+	 }
+	 @GetMapping("/verify/{uid}")
+	 public ResponseEntity<?> verify(@PathVariable Integer uid)
+	 {
+		 try
+		 {
+			 dao.verifyUser(uid);
+			 return new ResponseEntity<Boolean>(true,HttpStatus.OK);
+		 }
+		 catch (Exception e) {
+			 e.printStackTrace();
+			 return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		 }
+	 }
 }
