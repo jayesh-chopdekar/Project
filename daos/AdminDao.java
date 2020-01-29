@@ -34,6 +34,7 @@ public class AdminDao implements IAdminDao
 	{
 		String jpql="Select u from User u";
 		List<User> uList=sf.getCurrentSession().createQuery(jpql, User.class).getResultList();
+		
 		return uList;
 	}
 	@Override
@@ -69,7 +70,7 @@ public class AdminDao implements IAdminDao
 	{
 		User user = sf.getCurrentSession().get(User.class, id);
 		user.setVer(Verification.V);
-		
+			
 	}
 	@Override
 	public List<User> getRequest() 

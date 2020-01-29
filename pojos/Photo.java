@@ -15,7 +15,7 @@ import javax.persistence.Table;
 public class Photo 
 {
 	private Integer photoId;
-	private Byte[] img;
+	private byte[] img;
 	private User uId;
 	private Victim vId;
 	
@@ -24,7 +24,7 @@ public class Photo
 		System.out.println("inside photo parameterless ctor");
 	}
 
-	public Photo(Byte[] img) 
+	public Photo(byte[] img) 
 	{
 		System.out.println("inside photo parameterized ctor");
 		this.img = img;
@@ -41,11 +41,11 @@ public class Photo
 		this.photoId = photoId;
 	}
 	@Lob
-	public Byte[] getImg() {
+	public byte[] getImg() {
 		return img;
 	}
 
-	public void setImg(Byte[] img) {
+	public void setImg(byte[] img) {
 		this.img = img;
 	}
 	@OneToOne

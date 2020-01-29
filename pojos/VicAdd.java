@@ -16,6 +16,7 @@ public class VicAdd
 	private String phno;
 	private Date dob,missingDate;
 	private Photo photoId;
+	private byte[] img;
 	private String cmpNo;
 	public VicAdd() 
 	{}
@@ -26,6 +27,14 @@ public class VicAdd
 
 	public void setPhotoId(Photo photoId) {
 		this.photoId = photoId;
+	}
+
+	public byte[] getImg() {
+		return img;
+	}
+
+	public void setImg(byte[] img) {
+		this.img = img;
 	}
 
 	public Integer getvId() {

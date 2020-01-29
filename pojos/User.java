@@ -24,6 +24,7 @@ public class User
 	private Integer id;
 	private String name,email,password;
 	private UserRole role;
+	@JsonIgnore
 	private Photo dp;
 	private Verification ver;
 	@JsonIgnore

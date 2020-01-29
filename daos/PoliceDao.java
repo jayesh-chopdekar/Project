@@ -1,5 +1,6 @@
 package com.app.daos;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.app.pojos.Address;
+import com.app.pojos.Photo;
 import com.app.pojos.Police;
 import com.app.pojos.PoliceAdd;
 import com.app.pojos.User;
@@ -28,17 +30,31 @@ public class PoliceDao implements IPoliceDao
 	{
 		Address add=new Address(v.getCity(), v.getState(),v.getCountry(),v.getPhno());
 		Victim vic=new Victim(v.getAge(), v.getName(), v.getBgrp(), v.getCmpNo(), v.getHeight(), v.getDob(), v.getMissingDate(),v.getGender());
+		Photo p=new Photo(v.getImg());
+		sf.getCurrentSession().persist(p);
 		sf.getCurrentSession().persist(vic);
 		sf.getCurrentSession().persist(add);
 		vic.addAddress(add);
+		vic.addPhoto(p);
 		return v;
 	}
 	@Override
-	public List<Victim> showAllCases() 
+	public List<VicAdd> showAllCases() 
 	{
 		String jpql="select v from Victim v";
-		List<Victim> vicList=sf.getCurrentSession().createQuery(jpql, Victim.class).getResultList();		
-		return vicList;
+		List<Victim> vicList=sf.getCurrentSession().createQuery(jpql, Victim.class).getResultList();
+		List<VicAdd> v=new ArrayList<VicAdd>();
+		for (Victim victim : vicList) 
+		{
+			VicAdd vic=new VicAdd();
+			vic.setvId(victim.getvId());
+			vic.setName(victim.getName());
+			vic.setAge(victim.getAge());
+			vic.setHeight(victim.getHeight());
+			vic.setImg(victim.getPhotoId().getImg());
+			v.add(vic);
+		}
+		return v;
 		
 	}
 	@Override

@@ -12,13 +12,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.app.daos.IPoliceDao;
 import com.app.pojos.PoliceAdd;
 import com.app.pojos.UserAdd;
 import com.app.pojos.VicAdd;
 import com.app.pojos.Victim;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @CrossOrigin
 @RestController
@@ -29,20 +32,22 @@ public class PoliceController
 	IPoliceDao dao;
 	
 	@PostMapping("/regcase")
-	public ResponseEntity<?> regCase(@RequestBody VicAdd v)
+	public ResponseEntity<?> regCase(@RequestParam(value="vicadd") String vicadd,@RequestParam(value="file") MultipartFile file) throws Exception
 	{
-		VicAdd vic=dao.registerCase(v);
-		if(vic!=null)
-			return new ResponseEntity<VicAdd>(v,HttpStatus.OK);
+		VicAdd vic=new ObjectMapper().readValue(vicadd, VicAdd.class);
+		vic.setImg(file.getBytes());
+		VicAdd victim=dao.registerCase(vic);
+		if(victim!=null)
+			return new ResponseEntity<VicAdd>(victim,HttpStatus.OK);
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
 	@GetMapping("/showcases")
 	public ResponseEntity<?> showCases()
 	{
-		List<Victim> allCases = dao.showAllCases();
+		List<VicAdd> allCases = dao.showAllCases();
 		if(allCases.isEmpty())
 			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
-		return new ResponseEntity<List<Victim>>(allCases,HttpStatus.OK);
+		return new ResponseEntity<List<VicAdd>>(allCases,HttpStatus.OK);
 	}
 	@GetMapping("/search/{name}")
 	public ResponseEntity<?> search(@PathVariable String name)
@@ -53,11 +58,11 @@ public class PoliceController
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
 	@PostMapping("/poladd")
-	public ResponseEntity<?> addPolice(@RequestBody PoliceAdd p)
+	public ResponseEntity<?> addPolice(@RequestBody PoliceAdd pol) throws Exception
 	{
-		PoliceAdd pol=dao.addPolice(p);
-		if(pol!=null)
-			return new ResponseEntity<PoliceAdd>(p,HttpStatus.OK);
+		PoliceAdd addPolice = dao.addPolice(pol);
+		if(addPolice!=null)
+			return new ResponseEntity<PoliceAdd>(addPolice,HttpStatus.OK);
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
 	@PutMapping("/editpol/{id}")
